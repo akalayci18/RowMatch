@@ -31,7 +31,7 @@ public class LevelScore : MonoBehaviour
             else
             {
                 scoreText.text = "Highest Score: " + scoreValue.ToString();
-                if (true)
+                if (level != 15)
                 {
                     GameObject.Find("Level" + (level + 1)).transform.GetChild(2).gameObject.SetActive(true);
                     GameObject.Find("Level" + (level + 1)).transform.GetChild(1).gameObject.SetActive(false);
