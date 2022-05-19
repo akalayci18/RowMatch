@@ -18,8 +18,8 @@ public class FileManager : MonoBehaviour
         LevelMoves level = GameObject.Find("Level").GetComponent<LevelMoves>();
         print(level.level);
         
-        fileName = "RM_A" + level.level+ ".txt";
-        myFilePath = Application.dataPath + "/" + fileName;
+        fileName = "RM_A" + level.level;
+        myFilePath = Application.streamingAssetsPath + "/Files/" + fileName + ".txt"; 
         ReadFromFile(level);
     }
 
