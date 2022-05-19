@@ -21,6 +21,8 @@ public class boardGrid : MonoBehaviour
     public Text congratsPanelText;
     public GameObject congratsPanel;
 
+    [SerializeField] GameObject panel, star, glitter1, glitter2, highScoreText, title;
+
     public enum PieceType
     {
         NORMAL,
@@ -159,8 +161,15 @@ public class boardGrid : MonoBehaviour
             int piece1X = piece1.X;
             int piece1Y = piece1.Y;
 
-            piece1.MovableComponent.Move(piece2.X, piece2.Y);
-            piece2.MovableComponent.Move(piece1X, piece1Y);
+
+            //piece1.MovableComponent.Move(piece2.X, piece2.Y);
+            LeanTween.moveLocal(piece1.gameObject, new Vector3(transform.position.x - grid_width / 2.5f + piece2.X, transform.position.y - grid_height / 2.5f + piece2.Y, 0f), 0.5f).setEase(LeanTweenType.easeOutCirc);
+            piece1.X = piece2.X;
+            piece1.Y = piece2.Y;
+            //piece2.MovableComponent.Move(piece1X, piece1Y);
+            LeanTween.moveLocal(piece2.gameObject, new Vector3(transform.position.x - grid_width / 2.5f + piece1X, transform.position.y - grid_height / 2.5f + piece1Y, 0f), 0.5f).setEase(LeanTweenType.easeOutCirc);
+            piece2.X = piece1X;
+            piece2.Y = piece1Y;
 
             level.OnMove();
 
@@ -235,7 +244,9 @@ public class boardGrid : MonoBehaviour
         for (int x = 0; x < grid_width; x++)
         {
             pieces[x, piece.Y].ColorComponent.SetColor(ColorPiece.ColorType.CHECK);
-            
+            LeanTween.scale(pieces[x, piece.Y].gameObject, new Vector3(0f, 0f, 1f), 0f).setEase(LeanTweenType.easeOutElastic);
+            LeanTween.scale(pieces[x, piece.Y].gameObject, new Vector3(0.6f, 0.6f, 1f), 2f).setDelay(0.23f).setEase(LeanTweenType.easeOutElastic);
+        
         }
 
     }
@@ -267,11 +278,16 @@ public class boardGrid : MonoBehaviour
         if (score > scoreScript.scoreArray[currentLevel.level-1])
         {
             scoreScript.scoreArray[currentLevel.level - 1] = score;
-            congratsPanel.SetActive(true);
-            congratsPanelText = GameObject.Find("CongratsPanel").transform.GetChild(1).GetComponent<Text>();
+            //congratsPanel.SetActive(true);
+            LeanTween.moveLocal(panel, new Vector3(0, 38f, 0f), 0.7f).setDelay(.5f).setEase(LeanTweenType.easeOutCirc);
+            LeanTween.scale(star, new Vector3(1.2f, 1.2f, 1.2f), 2f).setDelay(.7f).setEase(LeanTweenType.easeOutElastic);
+            LeanTween.scale(title, new Vector3(1f, 1f, 1f), 2f).setDelay(.9f).setEase(LeanTweenType.easeOutElastic);
+            LeanTween.scale(glitter1, new Vector3(2f, 2f, 2f), 2f).setDelay(3f).setEase(LeanTweenType.easeOutElastic);
+            LeanTween.scale(glitter2, new Vector3(2f, 2f, 2f), 2f).setDelay(3f).setEase(LeanTweenType.easeOutElastic);
+            congratsPanelText = GameObject.Find("CongratsPanel").transform.GetChild(3).GetComponent<Text>();
             congratsPanelText.text = score.ToString();
             GameObject.Find("PopupManager").GetComponent<PopupManager>().isFromLevel = true;
-            this.Wait(2.5f, () =>
+            this.Wait(6.3f, () =>
             {
                 SceneManager.LoadScene("MainScene");
             });
@@ -282,5 +298,5 @@ public class boardGrid : MonoBehaviour
         SceneManager.LoadScene("MainScene");
      
     }
-
+ 
 }
