@@ -249,6 +249,55 @@ public class boardGrid : MonoBehaviour
         
         }
 
+        int blue = 0, yellow = 0, green = 0, red = 0;
+        bool isGameOver = true;
+
+        for (int y = 0; y < grid_height; y++)
+        {
+            for (int x = 0; x < grid_width; x++)
+            {
+                switch (pieces[x, y].ColorComponent.Color)
+                {
+                    case ColorPiece.ColorType.RED:
+                        red += 1;
+                        break;
+                    case ColorPiece.ColorType.GREEN:
+                        green += 1;
+                        break;
+                    case ColorPiece.ColorType.BLUE:
+                        blue += 1;
+                        break;
+                    case ColorPiece.ColorType.YELLOW:
+                        yellow += 1;
+                        break;
+                    default:
+                        break;
+                }
+
+                if (pieces[x, y].ColorComponent.Color == ColorPiece.ColorType.CHECK || ((x == grid_width-1) && (y == grid_height-1)))
+                {
+                    if(red >= grid_width || blue >= grid_width || green >= grid_width || yellow >= grid_width)
+                    {
+                        isGameOver = false;
+                        continue;
+                    } else
+                    {
+                        red = 0;
+                        blue = 0;
+                        yellow = 0;
+                        green = 0;
+                    }
+
+                }
+
+            }
+            
+        }
+        if (isGameOver)
+        {
+            GameOver();
+        }
+        
     }
 
     public void PressPiece(GamePiece piece)
